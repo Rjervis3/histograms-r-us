@@ -8,7 +8,7 @@
     /* *********************************************************************
      * Academic honesty certification:                                     *
      *   Written/online sources used:                                      *
-     *     [                              *
+     *     [referenced project 101                             *
      *                                    *
      *                                    *
      *   Help obtained: [none]                                             *
@@ -30,25 +30,42 @@
 *   as well as a histogram of the results. The height of the histogram ought*
 *   to be scaled. */ 
 
-
+//compile with gcc -o 1 supProb3.c
 
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <time.h>
 
 
 
 int main()
 {
  /* the number of couples in the simulation */
-  const int numberOfCouples = 60;
+  const int numberOfCouples = 5;
 
   /* number of children is recorded for sizes 1 .. maxRecordedSize */
   const int maxRecordedSize = 30;
+
   int famSize [maxRecordedSize + 1];
 
   /* the highest point of the histogram will have heightOfHistogram *'s */
   const int heightOfHistogram = 20;
 
+  int dataArray[numberOfCouples][1]; //will store couple number and # kids
+
+  const int MaxRandInt = RAND_MAX; 
+  srand (time ((time_t *) 0) );
+ double number = rand();
+  //simulation
+  int n, k;
+  for (n=1; n<=numberOfCouples; n++)
+    {
+    dataArray[n][0]=n;
+    printf(" couple %d:\n", dataArray[n][0]);
+    }
+
+  int boys=0, girls=0;
+  while ((boys ==0) || (girls ==0))     //while none of either gender
 
   return 0;
 }
