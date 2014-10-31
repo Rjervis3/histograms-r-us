@@ -1,5 +1,5 @@
     /***********************************************************************
-     * Name: Renn Jervis                                                   *
+     * Name: Renn Jervis*                                                   *
      * Box: 3762                                                           *
      * Assignment name: Supplemental Problem Number 3                      *
      * Assignment for Monday, November 3rd                                 *
@@ -36,12 +36,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-
+int average(int arr[][2]);
 
 int main()
 {
- /* the number of couples in the simulation */
-  const int numberOfCouples = 5;
+  /* the number of couples in the simulation */
+  const int numberOfCouples = 10;
 
   /* number of children is recorded for sizes 1 .. maxRecordedSize */
   const int maxRecordedSize = 30;
@@ -51,21 +51,32 @@ int main()
   /* the highest point of the histogram will have heightOfHistogram *'s */
   const int heightOfHistogram = 20;
 
-  int dataArray[numberOfCouples][1]; //will store couple number and # kids
+  int dataArray[numberOfCouples][2]; //will store couple number and # kids
 
   const int MaxRandInt = RAND_MAX; 
   srand (time ((time_t *) 0) );
- double number = rand();
+
+
   //simulation
   int n, k;
   for (n=1; n<=numberOfCouples; n++)
     {
-    dataArray[n][0]=n;
-    printf(" couple %d:\n", dataArray[n][0]);
+      dataArray[n][0]=n;
+      
+    
+
+      int boys=0;
+      int girls=0;
+      while ((boys ==0) || (girls ==0))     //while none of either gender
+	{
+	  if ((rand() / (double) MaxRandInt) < 0.5)
+	    girls++;
+	  else boys++;
+	}
+       dataArray[n][1] = boys + girls;
+       printf(" couple %d: %d\n", dataArray[n][0], dataArray[n][1]);
+       average(dataArray);
+
     }
-
-  int boys=0, girls=0;
-  while ((boys ==0) || (girls ==0))     //while none of either gender
-
   return 0;
 }
