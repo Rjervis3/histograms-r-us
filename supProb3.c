@@ -14,6 +14,7 @@
      *     referenced program from problem description family-size-stub.c  *
      *     referenced program lab2-2.c for advisement on passing pointers  *
      *     and or declaring pointers
+     *     from laboratory exercise on arrays, Array Parameter reading
      *   Help obtained: [none]                                             *
      *                                                                     *
      *   My/our signature(s) below confirms that the above list of sources *
@@ -41,34 +42,45 @@
 #include <time.h>
 #include <math.h>
 
+//Pre-conditions:size given is size of array
+//Post-conditions:function prints inidices and corresponding array element
 void printArray(int ar[], int size);
-//Pre-conditions:
-//Post-conditions:
+
+//Pre-conditions:array contains some positive integers
+//Post-conditions:funtion returns max number in array and stores
+// average of arrray elements in average
 int max_average(int ar[], int numCouples, double *average);
 
 //Pre-conditions:
-//Post-conditions:
+//Post-conditions:]function fills in second array with the count of elements
+//  in the first array
 void count(int ar[], int ar2[], int couples, int maxSize);
 
 //Pre-conditions:
 //Post-conditions:
 void printXaxis(int);
 
+//Pre-conditions:
+//Post-conditions:
 void printAxisLabels(int, int inc);
 
+//Pre-conditions:
+//Post-conditions:
 void printHistogram(int height, int, int);
 
+//Pre-conditions:
+//Post-conditions:function prints
 void printYaxis(int max_count, int height, int);
 
 int main()
 {
   /* the number of couples in the simulation */
-  const int numberOfCouples = 30;
+  const int numberOfCouples = 50;
 
   /* number of children is recorded for sizes 1 .. maxRecordedSize */
-  const int maxRecordedSize = 30;
+  const int maxRecordedSize = 40;
 
-  int famSize [maxRecordedSize + 1];
+  //int famSize [maxRecordedSize + 1];
 
   /* the highest point of the histogram will have heightOfHistogram *'s */
   const int heightOfHistogram = 20;
@@ -82,19 +94,18 @@ int main()
   printf("\tfamily sizes truncated to %d\n", maxRecordedSize);
   printf("\tmaximum height of histogram: %d\n", heightOfHistogram);
 
+  //array to hold the various family sizes
   int sizes[numberOfCouples];
 
   //simulation
   int couple=0, k;
-  // for (couple=0; couple<numberOfCouples; couple++)//run simulation for each 
   while (couple<numberOfCouples)               //couple 0 to numberOfCouples-1
     {
       int boys=0, girls=0;
-      // printf(" couple %2d:", couple);
-      while ((boys ==0) || (girls ==0))     //while none of either gender
+      while ((boys ==0) || (girls ==0))     //while no kids of either gender
 	{
 	  if ((rand() / (double) MaxRandInt) < 0.5)
-	      girls++;
+            girls++;
 	  else	 
 	    boys++;   
 	}
@@ -104,83 +115,117 @@ int main()
       if (sizes[couple] > maxRecordedSize)
 	sizes[couple]=maxRecordedSize;
       
-      //printf(" family size %d\n", sizes[couple]);
-      couple++;
-     
+      couple++; 
     } //end simulation
 
   double ave;
-  int max_size;  //ret maximum fam size, ave pointer updated
-
+  int max_size; 
   max_size= max_average(sizes, numberOfCouples, &ave);
-  printf("\tmax number of children: %d\n", max_size);
-  printf("\taverage number of children: %.2lf\n", ave);
-  
-  //take largest number from count and print histogram with that many 
-  //stars as height
+  //returns maximum fam size, ave pointer updated to average
 
+  printf("\taverage number of children: %.2lf\n", ave);
+  printf("\tmax family size: %d\n", max_size);
+  
   int tally[numberOfCouples];
+  //count will tabulate resuls and print a table: # kids, count
   count(sizes, tally, numberOfCouples, maxRecordedSize);
-  //printf("print tally after calling count function (main)");
-  // printArray(tally, maxRecordedSize);
+  printArray(tally, maxRecordedSize);
+
+  //find max of tabulated results, value stored in discard here is average
+  //count, which does not apple
   double discard;
   int max_count;
-  max_count=max_average(tally,numberOfCouples , &discard);
-   printf("max count=%d\n", max_count);
-   // printf("print just before here (main)\n");
-   //printArray(tally, maxRecordedSize);
-  int posx,rowNum, i,j,z;
-  char stars[maxRecordedSize];
-  
-  printf("# couples\n");
-  //only print heightOfHistogram number lablels
-  for(rowNum=max_count; rowNum>0; rowNum--)
-    { printf("%6d:", rowNum);
-    for(posx=0; posx<maxRecordedSize; posx++)
-      {
-	if (tally[posx]==0)
-	  {
-	    //printf("tally[%d]==0\n", posx);
-	  printf(" ");
-	  }
-	else if (tally[posx]>=rowNum)
-	  printf("*");
-      }printf("\n");
-    }
-  
-  /*
-  for(posy=heightOfHistogram; posy>0; posy--)
-    { 
-      tally[0]=0;
-      //printf("tally[0]=%d\n", tally[0]);
-      printf("%6d: ", posy);
-      for(z=0; z<=maxRecordedSize; z++) //loop to clear out array
-	{stars[z]=' ';
-	}
-      tally[0]=0;
-      //printf("ztally[0]=%d\n", tally[0]);
-      for(i=0; i<=maxRecordedSize; i++) 
-	{//stars[0]=' ';
-	  if (tally[i]>posy)
-	    { //printf("atally[0]=%d\n", tally[0]);
-	      stars[i]='*';
-	    }
-	  else if (tally[i]==0)
-	    {//printf("tally[0]=%d\n", tally[0]);
-	      stars[i]=' ';
-	    }
-	  else stars[i]= ' ';
-	  
-	}
-      printf ("\n");
-      // printf("here\n");
-      //printf("tally[0]=%d\n", tally[0]);
 
-      printArray(tally, maxRecordedSize);
-    }
-  */
-  printHistogram(heightOfHistogram, maxRecordedSize, max_count);
+  max_count=max_average(tally, maxRecordedSize, &discard);
+  printf("max count=%d\n", max_count);
+
+
+  int posx,rowNum;
+  int aCount=0;
+  printf("# couples\n"); //axis title
+  //only print heightOfHistogram number lablels
+ 
+
+  //now to print only heightOfHistogram rows
+  do{
+    //start with all rows, only print certain #
+    for(rowNum=max_count;rowNum>0;rowNum=rowNum-1)
+      {
+        if(rowNum== max_count)
+          { aCount+=1;
+            printf("%6d:", rowNum);
+          }
+        else if (rowNum ==heightOfHistogram)
+          { //always print first row ie max count
+            continue;
+          }
+        else if(rowNum ==heightOfHistogram/2)
+          {//middle
+            aCount+=1;
+            printf("%6d:", rowNum);
+            //rowNum--;
+          }
+        else if(rowNum ==max_count/4)
+          {//bottom fourth
+            aCount+=1;
+            printf("%6d:", rowNum);
+            //rowNum--;
+          } 
+        else if(rowNum>heightOfHistogram)
+          { //printf("%6d:", rowNum);
+            continue; //dont print rows above height       
+          }
+        else if(rowNum>0 && (aCount))
+          {printf("%6d:", rowNum);
+            aCount+=1;
+          }
+        for(posx=0; posx<=maxRecordedSize; posx++)
+          {
+            if (tally[posx]==0)
+              {
+                printf(" ");
+              }
+            else if (tally[posx]>=rowNum)
+              printf("*");
+            else printf(" ");
+          } 
+        
+        printf("\n");
+      }  
+      
+    //printf("aCount=%d\n", aCount);
+  }while(aCount<heightOfHistogram);
+
+  printXaxis(maxRecordedSize);
+
   return 0;
+}
+
+void count(int arraySizes[], int count[], int couples, int maxSize)
+{ 
+  int size, i;
+
+ //loop to clear out array
+  for(i=0; i<=maxSize; i++) count[i]=0;
+  
+  //check each array element and tally sizes 
+  for(size=0; size<=maxSize; size++)
+    {
+      for(i=0; i<couples; i++)
+        {
+          if(arraySizes[i]==size)
+            {
+            count[size]+=1;
+            }
+        }
+    }
+ 
+  //print table
+  printf("Family size  counts\n");
+  printf("# children:  count\n");
+  for(size=0; size<=maxSize; size++)
+    printf("%10d: %6d\n", size, count[size]);
+
 }
 
 void printArray(int ar[], int size)
@@ -188,25 +233,35 @@ void printArray(int ar[], int size)
   for(i=0; i<=size; i++)
     printf("element %d=%d \n", i, ar[i]);
 }
-void printHistogram(int height, int rBound, int max_count)
-{
-  // printf("\n\nHistogram of family sizes:\n\n");
-  // printYaxis(max_count, height, rBound);
-  printXaxis(rBound);
-}
-void printYaxis(int max_count, int height, int maxFamSize)
-{
-  printf("top bound = %d\n\n", max_count);
+int max_average(int ar[], int size, double *average)
+{ 
+  double sum=0;
+  int max=0; 
   int i;
+  for (i=0; i<size; i++)
+    {
+      sum+=ar[i];
+      if(ar[i]>max)
+        max=ar[i]; 
+        
+    }
+  *average= sum / (double) size;
+  //printf("-printing ar again in m_a\n\n");
+  //printArray(ar, size);
+  return max;
 }
 void printXaxis(int max_Size)
 {
   int increment;
-  if (((max_Size % 2)==0))
-    increment= max_Size/4;
+  //printf("max size%3 = %d\n", max_Size%3);
   if (((max_Size % 3)==0))
-    increment=max_Size/3;
-
+    increment=max_Size/ 3;
+  else if ((max_Size %3 !=0))
+    {int rem=(max_Size%3);
+      //printf("rem=%d\n", rem);
+      increment=((max_Size-rem)/3);
+    }
+  // printf("increment=%d\n", increment);
   int i;
   printf("       +");
   for(i=1; i<=max_Size; i++)
@@ -228,7 +283,6 @@ void printXaxis(int max_Size)
 void printAxisLabels(int max, int inc)
 {
   int i=0;
- 
   printf("       0");
   for(i=1; i<=max; i++)
     {
@@ -237,7 +291,7 @@ void printAxisLabels(int max, int inc)
 	  printf("%d", inc);
 	}
       else if(i== 2*inc) 
-	{ if (inc*2>=10) i+=1;    /*if accounts dor single digit increments*/
+	{ if (inc*2>=10) i+=1;    /*if accounts for single digit increments*/
 	  printf("%d", 2*inc);
 	}
       else if(i== max)
@@ -251,53 +305,7 @@ void printAxisLabels(int max, int inc)
 }
 
 
-int max_average(int ar[], int size, double *average)
-{ 
-  double sum=0;
-  int max=0; 
-    int i;
-    //  printf("printing ar in m_a\n\n");
-    // printArray(ar, size);
-  for (i=0; i<size; i++)
-    {
-      sum+=ar[i];
-      if(ar[i]>max)
-        max=ar[i]; //update value max points to
-        
-    }
-  *average= sum / (double) size;
-  //printf("-printing ar again in m_a\n\n");
-  //printArray(ar, size);
-  return max;
-}
 
 
-void count(int arraySizes[], int count[], int couples, int maxSize)
-{ 
-  int size, i;
-  // int tally[maxSize];
-  for(i=0; i<=maxSize; i++) //loop to clear out array
-    {count[i]=0;
-    }
-  // printf("-printing in count\n\n");
-  // printArray(count, maxSize);
-  for(size=0; size<=maxSize; size++)
-    {
-      for(i=0; i<couples; i++)
-        {
-          if(arraySizes[i]==size)
-            {
-            count[size]+=1;
-            }
-        }
-    }
-  //check each array element and tally sizes
-  printf("Family size  counts\n");
-  printf("# children:  count\n");
-  for(size=0; size<=maxSize; size++)
-    printf("%10d: %6d\n", size, count[size]);
 
-  //printf("-printing of count after count\n\n");
-  //printArray(count, maxSize);
 
-}
