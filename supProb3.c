@@ -1,5 +1,5 @@
     /***********************************************************************
-     * Name: Renn Jervis*                                                   *
+     * Name: Renn Jervis                                                   *
      * Box: 3762                                                           *
      * Assignment name: Supplemental Problem Number 3                      *
      * Assignment for Monday, November 3rd                                 *
