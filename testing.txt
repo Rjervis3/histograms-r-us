@@ -1,0 +1,402 @@
+Testing for Supplemental Problem 3:
+
+This problem has several variables that need a reasonable amount of
+testing to make sure the program functions correctly in different scenarios.
+
+variables to be changed are:
+
+  /* the number of couples in the simulation */
+  const int numberOfCouples = 60;
+
+  /* number of children is recorded for sizes 1 .. maxRecordedSize */
+  const int maxRecordedSize = 30;
+  int famSize [maxRecordedSize + 1];
+
+  /* the highest point of the histogram will have heightOfHistogram *'s */
+  const int heightOfHistogram = 20;
+
+white-box approach(based on code)
+
+To begin, let us set all variables to the numbers given in the problem
+(and above) to make sure the program yields expected output. Compile with
+the line  gcc -o supProb3 supProb3.c.
+test case 1:
+program yields:
+
+Simulation of family size for 60 couples
+	family sizes truncated to 30
+	maximum height of histogram: 20
+	average number of children: 3.3
+	max family size: 11
+
+Family size  counts
+# children:  count
+         0:      0
+         1:      0
+         2:     21
+         3:     22
+         4:     11
+         5:      0
+         6:      1
+         7:      3
+         8:      1
+         9:      0
+        10:      0
+        11:      1
+        12:      0
+        13:      0
+        14:      0
+        15:      0
+        16:      0
+        17:      0
+        18:      0
+        19:      0
+        20:      0
+        21:      0
+        22:      0
+        23:      0
+        24:      0
+        25:      0
+        26:      0
+        27:      0
+        28:      0
+        29:      0
+        30:      0
+scale =2
+# couples
+    22:   *                           
+    16:  **                           
+    14:  **                           
+    12:  **                           
+    11:  ***                          
+    10:  ***                          
+     8:  ***                          
+     7:  ***                          
+     6:  ***                          
+     4:  ***                          
+     3:  ***  *                       
+     2:  ***  *                       
+     1:  *** ***  *                   
+       +---------+---------+---------+
+       0         10        20        30
+	family sizes
+
+We see that this ran ohkay and the results look plausable.
+
+For the variables we have now, lets test an important function of the
+program, that is, the scaling of the histogram. 
+a) change the heightOfHistogram variable to some smaller number
+Test case 2: heightOfHistogram =15 :
+numberOfCouple=30;
+
+Simulation of family size for 30 couples
+	family sizes truncated to 30
+	maximum height of histogram: 15
+	average number of children: 2.8
+	max family size: 7
+
+Family size  counts
+# children:  count
+         0:      0
+         1:      0
+         2:     19
+         3:      3
+         4:      5
+         5:      2
+         6:      0
+         7:      1
+         8:      0
+         9:      0
+        10:      0
+        11:      0
+        12:      0
+        13:      0
+        14:      0
+        15:      0
+        16:      0
+        17:      0
+        18:      0
+        19:      0
+        20:      0
+        21:      0
+        22:      0
+        23:      0
+        24:      0
+        25:      0
+        26:      0
+        27:      0
+        28:      0
+        29:      0
+        30:      0
+scale =2
+# couples
+    19:  *                            
+    12:  *                            
+    10:  *                            
+     8:  *                            
+     7:  *                            
+     6:  *                            
+     5:  * *                          
+     4:  * *                          
+     3:  ***                          
+     2:  ****                         
+     1:  **** *                       
+       +---------+---------+---------+
+       0         10        20        30
+	family sizes
+->note this works best if numberOfCouples<3*heightOfHistogram
+(program ouput)
+
+-> we see it prints correctly as before and prints correct number of rows 
+(though for small heightOfHistogram some of the conditions fail to apply.
+
+b) lets try a larger scaling
+Test case 2: heightOfHistoram =30:
+
+Simulation of family size for 30 couples
+	family sizes truncated to 30
+	maximum height of histogram: 30
+	average number of children: 3.4
+	max family size: 8
+
+Family size  counts
+# children:  count
+         0:      0
+         1:      0
+         2:     11
+         3:      8
+         4:      6
+         5:      2
+         6:      1
+         7:      0
+         8:      2
+         9:      0
+        10:      0
+        11:      0
+        12:      0
+        13:      0
+        14:      0
+        15:      0
+        16:      0
+        17:      0
+        18:      0
+        19:      0
+        20:      0
+        21:      0
+        22:      0
+        23:      0
+        24:      0
+        25:      0
+        26:      0
+        27:      0
+        28:      0
+        29:      0
+        30:      0
+scale =1
+# couples
+    11:  *                            
+     8:  **                           
+     6:  ***                          
+     5:  ***                          
+     4:  ***                          
+     3:  ***                          
+     2:  ****  *                      
+     1:  ***** *                      
+       +---------+---------+---------+
+       0         10        20        30
+	family sizes
+note if height of histogram > max_value less rows are printed.
+
+Now lets test different values for numberOfCouples
+a)  
+Test case 3: const int numberOfCouples = 60;
+
+Simulation of family size for 60 couples
+	family sizes truncated to 30
+	maximum height of histogram: 30
+	average number of children: 2.9
+	max family size: 6
+
+Family size  counts
+# children:  count
+         0:      0
+         1:      0
+         2:     26
+         3:     19
+         4:     11
+         5:      1
+         6:      3
+         7:      0
+         8:      0
+         9:      0
+        10:      0
+        11:      0
+        12:      0
+        13:      0
+        14:      0
+        15:      0
+        16:      0
+        17:      0
+        18:      0
+        19:      0
+        20:      0
+        21:      0
+        22:      0
+        23:      0
+        24:      0
+        25:      0
+        26:      0
+        27:      0
+        28:      0
+        29:      0
+        30:      0
+scale =1
+# couples
+    26:  *                            
+    22:  *                            
+    20:  *                            
+    18:  **                           
+    16:  **                           
+    14:  **                           
+    12:  **                           
+    10:  ***                          
+     8:  ***                          
+     6:  ***                          
+     5:  ***                          
+     4:  ***                          
+     3:  *** *                        
+     2:  *** *                        
+     1:  *****                        
+       +---------+---------+---------+
+       0         10        20        30
+	family sizes
+
+b) lets include an odd case
+Test Case 4: const int numberOfCouples = 15;
+
+and now for different const int maxRecordedSize = 30;
+
+Simulation of family size for 15 couples
+	family sizes truncated to 30
+	maximum height of histogram: 30
+	average number of children: 3.3
+	max family size: 7
+
+Family size  counts
+# children:  count
+         0:      0
+         1:      0
+         2:      6
+         3:      3
+         4:      3
+         5:      2
+         6:      0
+         7:      1
+         8:      0
+         9:      0
+        10:      0
+        11:      0
+        12:      0
+        13:      0
+        14:      0
+        15:      0
+        16:      0
+        17:      0
+        18:      0
+        19:      0
+        20:      0
+        21:      0
+        22:      0
+        23:      0
+        24:      0
+        25:      0
+        26:      0
+        27:      0
+        28:      0
+        29:      0
+        30:      0
+scale =1
+# couples
+     6:  *                            
+     3:  ***                          
+     2:  ****                         
+     1:  **** *                       
+       +---------+---------+---------+
+       0         10        20        30
+	family sizes
+
+and now a few different family sizes:
+a)Test Case 5: const int numberOfCouples = 15;
+
+Simulation of family size for 15 couples
+	family sizes truncated to 15
+	maximum height of histogram: 30
+	average number of children: 3.4
+	max family size: 7
+
+Family size  counts
+# children:  count
+         0:      0
+         1:      0
+         2:      7
+         3:      2
+         4:      2
+         5:      2
+         6:      1
+         7:      1
+         8:      0
+         9:      0
+        10:      0
+        11:      0
+        12:      0
+        13:      0
+        14:      0
+        15:      0
+scale =1
+# couples
+     7:  *             
+     4:  *             
+     3:  *             
+     2:  ****          
+     1:  ******        
+       +----+----+----+
+       0    5    10   15
+	family sizes
+b)Test Case 5: const int numberOfCouples = 10;
+
+Simulation of family size for 15 couples
+	family sizes truncated to 10
+	maximum height of histogram: 30
+	average number of children: 2.7
+	max family size: 7
+
+Family size  counts
+# children:  count
+         0:      0
+         1:      0
+         2:     10
+         3:      2
+         4:      2
+         5:      0
+         6:      0
+         7:      1
+         8:      0
+         9:      0
+        10:      0
+scale =1
+# couples
+    10:  *        
+     7:  *        
+     6:  *        
+     4:  *        
+     3:  *        
+     2:  ***      
+     1:  ***  *   
+       +--+--+---+
+       0  3  6   10
+	family sizes
+
+
+
+I know the program is correct because it meets requirement and tests well.
+algorith for picking lines to print needs work
